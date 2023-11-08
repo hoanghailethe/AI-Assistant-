@@ -1,5 +1,7 @@
 .env
+.mp3
 
+todo.txt
 # Ignore all .log files
 *.log
 
