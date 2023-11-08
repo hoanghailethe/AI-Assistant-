@@ -4,6 +4,11 @@ import playsound
 from gtts import gTTS
 import openai
 import uuid
+import pyaudio
+
+from dotenv import load_dotenv
+
+load_dotenv()  # This loads the environment variables from the .env file
 
 # Load the API key from an environment variable for security
 api_key = os.getenv("OPENAI_API_KEY")
@@ -19,7 +24,7 @@ def list_microphones():
     mic_list = sr.Microphone.list_microphone_names()
     # List all microphones
     print("Available microphones:")
-    for index, name in enumerate(mic_list):
+    for index, name in enumerate(mic_list): 
         print(f"{index}: {name}")
     mic_index = int(input("Select the microphone index: "))
     return mic_index
@@ -27,20 +32,21 @@ def list_microphones():
 def get_audio(mic_index):
     print('Listening...')
     r = sr.Recognizer()
-    with sr.Microphone(device_index=mic_index) as source:
-        r.adjust_for_ambient_noise(source)  # Adjust for ambient noise
-        audio = r.listen(source)
+    
+    try:
+        with sr.Microphone(device_index=mic_index) as source:
+            r.adjust_for_ambient_noise(source)  # Adjust for ambient noise
+            audio = r.listen(source)
 
-        text = ""
-        try:
+            text = ""
             # Recognize speech using Google Speech Recognition
             text = r.recognize_google(audio, language=lang)
             print(f"You said: {text}")
-        except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
-        except sr.RequestError as e:
-            print(f"Could not request results from Google Speech Recognition service; {e}")
-        return text
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print(f"Could not request results from Google Speech Recognition service; {e}")
+    return text
 
 def respond_to_audio(text):
     if "Friday" in text:
@@ -63,3 +69,6 @@ while True:
         break
     if spoken_text:
         respond_to_audio(spoken_text)
+        
+        
+        # pip install -r requirements.txt

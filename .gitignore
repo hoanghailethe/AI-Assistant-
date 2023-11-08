@@ -1,1 +1,25 @@
 .env
+
+# Ignore all .log files
+*.log
+
+# Ignore specific files
+secrets.json
+config.env
+
+# Ignore all files in a specific directory
+temp/
+build/
+
+# Ignore all .txt files in the doc/ directory
+doc/*.txt
+
+# Ignore a specific file, but not others with the same name
+!/todo.txt
+/todo*.txt
+
+# Ignore files with names ending in ~ (usually backup files)
+*~
+
+# Ignore directories with the name node_modules
+node_modules/
